@@ -48,7 +48,7 @@ private constant kDefaultUserFamily is "custom"
 ----------------------------------------------------------------
 -- UTF-8 encoding/decoding
 ----------------------------------------------------------------
--- FIXME this should use proper Extebsion Builder syntax for string encoding/decoding.
+-- FIXME this should use proper Extebsion Builder syntax for string encoding/decoding (which was never completed up to v9.6.3)
 -- https://forums.livecode.com/viewtopic.php?t=28086
 foreign handler MCStringEncode(in Source as String, in Encoding as CInt, in IsExternalRep as CBool, out Encoded as Data) returns CBool binds to "<builtin>"
 foreign handler MCStringDecode(in Encoded as Data, in Encoding as CInt, in IsExternalRep as CBool, out Result as String) returns CBool binds to "<builtin>"
@@ -89,18 +89,18 @@ private handler initializeIconsFromTSV(in pTSVFile as optional String) returns A
 	if pTSVFile is nothing or pTSVFile is the empty string then
 		put my resources folder & "/OpenXtalkSVGIcons.tsv" into tResourceFile
 	else if pTSVFile is "IonIcons.tsv" or pTSVFile is "MaterialIcons4.tsv" then
-		-- log pTSVFile
 		put my resources folder & "/" & pTSVFile into tResourceFile
 		log [pTSVFile]
 	else
-		-- resolve file pTSVFile
+		-- resolve file pTSVFile -- don't use resolve file, expect full paths instead
 		-- put the result into tResourceFile
 		put pTSVFile into tResourceFile
 		log [pTSVFile]
 	end if
 
 	-- TODO: resolve file first to catch file not found error
-	put the contents of file tResourceFile into tFileText
+
+	put the contents of file tResourceFile into tFileText -- slurp the entire file into a variable
 	-- if tFileText is not the empty data then
 		--  put byte 1 to -1 of tFileText into tAny
 		-- variable tDotOffset
