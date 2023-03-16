@@ -12,6 +12,7 @@ import module org.openxtalk.library.libsvgicons
   use com.livecode.typeconvert
   use com.livecode.char
   use com.livecode.array
+  use com.livecode.byte
   handler DataFromUTF8(in pString as String) returns Data
   handler DataToUTF8(in pData as Data) returns String
   handler loadOXTIcons() returns nothing
