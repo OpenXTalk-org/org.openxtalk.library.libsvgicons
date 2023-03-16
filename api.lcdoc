@@ -1,0 +1,11 @@
+Library: org.openxtalk.library.libsvgicons
+
+Type: library
+
+Summary: This is the OpenXtalk SVG icon path library.
+
+version: 0.1.0
+
+author: OpenXTalk
+
+
