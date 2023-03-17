@@ -23,6 +23,7 @@ library org.openxtalk.library.libsvgicons
 
 use com.livecode.engine
 use com.livecode.file
+use com.livecode.char
 use com.livecode.typeconvert
 use com.livecode.string
 use com.livecode.array
@@ -31,6 +32,7 @@ use com.livecode.byte
 use com.livecode.foreign
 use com.livecode.codeunit
 use com.livecode.library.iconsvg
+use com.livecode.widget
 
 metadata version is "0.1.0"
 metadata author is "OpenXTalk"
@@ -67,6 +69,10 @@ public handler DataToUTF8(in pData as Data) returns String
 	return tString
 end handler
 -------------------------------------------------------------------
+
+-- public handler Main() -- what is the Library equivelant to 'OnLoad'????
+--	log "Extensions"
+-- end handler
 
 private handler initializeIconsFromTSV(in pTSVFile as optional String) returns Array
 	variable tArray as Array
@@ -116,7 +122,8 @@ private handler initializeIconsFromTSV(in pTSVFile as optional String) returns A
 		split tAStr by newline into tList
 		repeat for each element tLine in tList
 			add 1 to tLineCnt
-			if tLine contains "Name" and tLine contains "SVGPath" then
+			log tLineCnt
+			if (tLine contains "Name") or (tLine contains "SVGPath") then
 				next repeat
 			end if
 			split tLine by "\t" into tKeyValuePair
