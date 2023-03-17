@@ -33,6 +33,7 @@ use com.livecode.foreign
 use com.livecode.codeunit
 use com.livecode.library.iconsvg
 use com.livecode.widget
+use com.livecode.canvas
 
 metadata version is "0.1.0"
 metadata author is "OpenXTalk"
@@ -178,5 +179,37 @@ public handler loadIconSetFromTSVFile(in pLoadName as String, in pTSVFilePath as
 		end if
 		addIconFamily( pLoadName, initializeIconsFromTSV(pTSVFilePath) )
 end handler
+
+
+public handler verticalFlippedOfSVGPath(in pSVGPath) returns String
+	variable tPath as Path
+	variable tPathData as String
+	put path pSVGPath into tPath
+	scale tPath by [1,-1]
+	translate tPath by [0, the height of the bounding box of tPath]
+	put the instructions of tPath into tPathData
+	return tPathData
+end handler
+
+public handler horizontalFlippedOfSVGPath(in pSVGPath) returns String
+	variable tPath as Path
+	variable tPathData as String
+	put path pSVGPath into tPath
+	scale tPath by [-1,1]
+	translate tPath by [the height of the bounding box of tPath, 0]
+	put the instructions of tPath into tPathData
+	return tPathData
+end handler
+
+public handler horizSquishFlippedOfSVGPath(in pSVGPath) returns String
+	variable tPath as Path
+	variable tPathData as String
+	put path pSVGPath into tPath
+	scale tPath by [-1,0.5]
+	translate tPath by [the height of the bounding box of tPath, 0]
+	put the instructions of tPath into tPathData
+	return tPathData
+end handler
+
 
 end library

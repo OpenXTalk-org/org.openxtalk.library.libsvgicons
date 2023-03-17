@@ -7,6 +7,7 @@
   <type>library</type>
   <requires name="com.livecode.foreign"/>
   <requires name="com.livecode.library.iconsvg"/>
+  <requires name="com.livecode.canvas"/>
   <requires name="com.livecode.arithmetic"/>
   <requires name="com.livecode.binary"/>
   <requires name="com.livecode.list"/>
@@ -25,4 +26,7 @@
   <handler name="loadOXTIcons" parameters="" return="nothing"/>
   <handler name="loadAllIconSets" parameters="" return="nothing"/>
   <handler name="loadIconSetFromTSVFile" parameters="in string,in string" return="nothing"/>
+  <handler name="verticalFlippedOfSVGPath" parameters="in any" return="string"/>
+  <handler name="horizontalFlippedOfSVGPath" parameters="in any" return="string"/>
+  <handler name="horizSquishFlippedOfSVGPath" parameters="in any" return="string"/>
 </package>

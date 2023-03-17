@@ -1,6 +1,7 @@
 import module org.openxtalk.library.libsvgicons
   use com.livecode.foreign
   use com.livecode.library.iconsvg
+  use com.livecode.canvas
   use com.livecode.arithmetic
   use com.livecode.binary
   use com.livecode.list
@@ -18,4 +19,7 @@ import module org.openxtalk.library.libsvgicons
   handler loadOXTIcons() returns nothing
   handler loadAllIconSets() returns nothing
   handler loadIconSetFromTSVFile(in pLoadName as String, in pTSVFilePath as String) returns nothing
+  handler verticalFlippedOfSVGPath(in pSVGPath as optional any) returns String
+  handler horizontalFlippedOfSVGPath(in pSVGPath as optional any) returns String
+  handler horizSquishFlippedOfSVGPath(in pSVGPath as optional any) returns String
 end module
