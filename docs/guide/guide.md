@@ -1,4 +1,4 @@
-# Header Bar Widget
+# libSVGicons
 This is a library meant to compliment the IconSVG library in the IDE.
 
 A main feature is support for loading DVG Icon sets stored in a simple
