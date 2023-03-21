@@ -78,6 +78,8 @@ end handler
 private handler initializeIconsFromTSV(in pTSVFile as optional String) returns Array
 	variable tArray as Array
 	variable tAStr as optional String
+	variable tBStr as optional String
+
 	variable tAData as any
 	variable tFileText -- as Data
 	variable tResourceFile as optional any
@@ -115,6 +117,7 @@ private handler initializeIconsFromTSV(in pTSVFile as optional String) returns A
 		-- put the first offset of (the byte with code 9) in tFileText into tDotOffset
 		-- put byte 1 to tDotOffset of tFileText into tAData
 		put DataToUTF8( tFileText ) into tAStr
+		-- log [tBStr]
 		-- put codeunit 1 to tDotOffset of tFileText into tAStr
 		-- put the char with code (byte 1 of tFileText) into tAStr
 	   --	repeat for each byte tByte in tFileText
@@ -196,7 +199,7 @@ public handler horizontalFlippedOfSVGPath(in pSVGPath) returns String
 	variable tPathData as String
 	put path pSVGPath into tPath
 	scale tPath by [-1,1]
-	translate tPath by [the height of the bounding box of tPath, 0]
+	translate tPath by [the width of the bounding box of tPath, 0]
 	put the instructions of tPath into tPathData
 	return tPathData
 end handler
