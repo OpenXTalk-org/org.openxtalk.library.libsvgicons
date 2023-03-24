@@ -9,6 +9,7 @@ samples/._SVG Icons Browser.oxtstack
 support/._defaultscript.livecodescript
 support/._icon@extra-high.png
 ._OXTLibSVGIcons.lcb
-._*
+*._*
 OpenXtalkSVGwork/.DS_Store
-.DS_Store
+*.DS_Store*
+Parse SVG Glyphs/.DS_Store
