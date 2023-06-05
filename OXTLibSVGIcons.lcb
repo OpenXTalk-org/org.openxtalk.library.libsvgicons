@@ -45,8 +45,16 @@ private variable sNamesArray as Array
 private variable sInitialised as optional Boolean
 private variable sCurrentFamily as String
 
-private constant kDefaultFamily is "oxtide"
+private constant kDefaultFamily is "OXTide"
 private constant kDefaultUserFamily is "custom"
+
+private handler ensureInitialised()
+	if sInitialised is nothing then
+		loadOXTIcons()
+		put true into sInitialised
+		put kDefaultFamily into sCurrentFamily
+	end if
+end handler
 
 ----------------------------------------------------------------
 -- UTF-8 encoding/decoding
@@ -75,6 +83,8 @@ end handler
 --	log "Extensions"
 -- end handler
 
+/**
+**/
 private handler initializeIconsFromTSV(in pTSVFile as optional String) returns Array
 	variable tArray as Array
 	variable tAStr as optional String
@@ -97,7 +107,7 @@ private handler initializeIconsFromTSV(in pTSVFile as optional String) returns A
 	put {} into tArray
 	if pTSVFile is nothing or pTSVFile is the empty string then
 		put my resources folder & "/OpenXtalkSVGIcons.tsv" into tResourceFile
-	else if pTSVFile is "IonIcons.tsv" or pTSVFile is "MaterialIcons4.tsv" then
+	else if pTSVFile is "IonIcons.tsv" or pTSVFile is "MaterialIcons4.tsv" or pTSVFile is "BoxIcons.tsv" then
 		put my resources folder & "/" & pTSVFile into tResourceFile
 		log [pTSVFile]
 	else
@@ -157,33 +167,43 @@ private handler initializeIconsFromTSV(in pTSVFile as optional String) returns A
 	--  end if
 end handler
 
+/**
+**/
 public handler loadOXTIcons() returns nothing
-	variable tFamily
-	variable tName
-	variable tTempArray as optional Array
 	addIconFamily("OXTide", initializeIconsFromTSV( "" ) )
-	-- addIconFamily("IonIcons", initializeIconsFromTSV("IonIcons.tsv") )
-	-- addIconFamily("MaterialIcons", initializeIconsFromTSV("MaterialIcons4.tsv") )
 end handler
 
+/**
+**/
 public handler loadAllIconSets() returns nothing
 	variable tFamily
 	variable tName
 	variable tTempArray as optional Array
-	addIconFamily("OXTide", initializeIconsFromTSV( "" ) )
+	loadOXTIcons()
 	addIconFamily("IonIcons", initializeIconsFromTSV("IonIcons.tsv") )
- 	addIconFamily("MaterialIcons", initializeIconsFromTSV("MaterialIcons4.tsv") )
+ 	addIconFamily("MaterialIcons4", initializeIconsFromTSV("MaterialIcons4.tsv") )
+	addIconFamily("BoxIcons", initializeIconsFromTSV("BoxIcons.tsv") )
 end handler
 
-public handler loadIconSetFromTSVFile(in pLoadName as String, in pTSVFilePath as String) returns nothing
-		if pLoadName is the empty string then
-			--- Parse an Appropriate Name here
-			put "Loaded Icon Set" into pLoadName
-		end if
-		addIconFamily( pLoadName, initializeIconsFromTSV(pTSVFilePath) )
-end handler
+/**
+Syntax:
+verticalFlippedOfSVGPath( pInSVGPath )
 
+Summary:
 
+Parameters:
+pInSVGPath: An SVG path string
+
+Returns:
+pOutSVGPath: A modified SVG path string
+
+Example:
+put verticalFlippedOfSVGPath(pInSVGPath) into tOutSVGPath
+
+Description:
+verticalFlippedOfSVGPath function takes an input SVG Path and returns a new
+SVG path string that has been flipped vertically.
+**/
 public handler verticalFlippedOfSVGPath(in pSVGPath) returns String
 	variable tPath as Path
 	variable tPathData as String
@@ -194,6 +214,80 @@ public handler verticalFlippedOfSVGPath(in pSVGPath) returns String
 	return tPathData
 end handler
 
+/**
+Syntax:
+loadIconSetFromTSVFile pFilePathToTSVfile
+
+Summary:
+
+Parameters:
+pFilePathToTSVfile: A file path to an SVG glyphs collection in Tab Seperated Values format.
+
+Example:
+put horizontalFlippedOfSVGPath(pInSVGPath) into tOutSVGPath
+
+Description:
+Use loadIconSetFromTSVFile command to load an SVG glyphs collection in
+Tab Seperated Values format. The will then be parsed and loaded into memory into
+the font family array compatible with the IconSVG library.
+LibSVGIcons comes with glyph several sets ready to be used.
+**/
+public handler loadIconSetFromTSVFile(in pLoadName as String, in pTSVFilePath as String) returns nothing
+		if pLoadName is the empty string then
+			--- Parse an Appropriate Name here
+			put "Loaded Icon Set" into pLoadName
+		end if
+		addIconFamily( pLoadName, initializeIconsFromTSV(pTSVFilePath) )
+end handler
+
+/**
+Syntax:
+verticalFlippedOfSVGPath( pInSVGPath )
+
+Summary:
+
+Parameters:
+pInSVGPath: An SVG path string
+
+Returns:
+pOutSVGPath: A modified SVG path string
+
+Example:
+put verticalFlippedOfSVGPath(pInSVGPath) into tOutSVGPath
+
+Description:
+verticalFlippedOfSVGPath function takes an input SVG Path and returns a new
+SVG path string that has been flipped vertically.
+**/
+public handler verticalFlippedOfSVGPath(in pSVGPath) returns String
+	variable tPath as Path
+	variable tPathData as String
+	put path pSVGPath into tPath
+	scale tPath by [1,-1]
+	translate tPath by [0, the height of the bounding box of tPath]
+	put the instructions of tPath into tPathData
+	return tPathData
+end handler
+
+/**
+Syntax:
+horizontalFlippedOfSVGPath( pInSVGPath )
+
+Summary:
+
+Parameters:
+pInSVGPath: An SVG path string
+
+Returns:
+pOutSVGPath: A modified SVG path string
+
+Example:
+put horizontalFlippedOfSVGPath(pInSVGPath) into tOutSVGPath
+
+Description:
+horizontalFlippedOfSVGPath function takes an input SVG Path and returns a new
+SVG path string that has been flipped horizontally.
+**/
 public handler horizontalFlippedOfSVGPath(in pSVGPath) returns String
 	variable tPath as Path
 	variable tPathData as String
@@ -204,15 +298,58 @@ public handler horizontalFlippedOfSVGPath(in pSVGPath) returns String
 	return tPathData
 end handler
 
-public handler horizSquishFlippedOfSVGPath(in pSVGPath) returns String
+/**
+Syntax:
+horizSquishFlippedOfSVGPath( pSVGPath )
+
+Summary:
+
+Parameters:
+pScale: Percentage of original to scale
+pSVGPath: An SVG path string
+
+Example:
+put horizScaledOfSVGPath( 1.5, pInSVGPath) into tOutSVGPath -- tOutSVGPath is 150% of the width of pInSVGPath
+
+Description:
+Use horizScaledOfSVGPath function to get a path that is scaled width-wise.
+
+**/
+public handler horizScaledOfSVGPath(in pScale as integer, in pSVGPath) returns String
 	variable tPath as Path
 	variable tPathData as String
 	put path pSVGPath into tPath
-	scale tPath by [-1,0.5]
+	scale tPath by [1,pScale]
 	translate tPath by [the height of the bounding box of tPath, 0]
 	put the instructions of tPath into tPathData
 	return tPathData
 end handler
 
+/**
+Syntax:
+vertScaledOfSVGPath( pSVGPath )
+
+Summary:
+
+Parameters:
+pScale: Percentage of original to scale
+pSVGPath: An SVG path string
+
+Example:
+put vertScaledOfSVGPath( 1.5, pInSVGPath) into tOutSVGPath -- tOutSVGPath is 150% of the height of pInSVGPath
+
+Description:
+Use vertScaledOfSVGPath function to get a path that is scaled height-wise.
+
+**/
+public handler vertScaledOfSVGPath(in pScale as integer, in pSVGPath) returns String
+	variable tPath as Path
+	variable tPathData as String
+	put path pSVGPath into tPath
+	scale tPath by [pScale,1]
+	translate tPath by [the height of the bounding box of tPath, 0]
+	put the instructions of tPath into tPathData
+	return tPathData
+end handler
 
 end library
