@@ -187,35 +187,6 @@ end handler
 
 /**
 Syntax:
-verticalFlippedOfSVGPath( pInSVGPath )
-
-Summary:
-
-Parameters:
-pInSVGPath: An SVG path string
-
-Returns:
-pOutSVGPath: A modified SVG path string
-
-Example:
-put verticalFlippedOfSVGPath(pInSVGPath) into tOutSVGPath
-
-Description:
-verticalFlippedOfSVGPath function takes an input SVG Path and returns a new
-SVG path string that has been flipped vertically.
-**/
-public handler verticalFlippedOfSVGPath(in pSVGPath) returns String
-	variable tPath as Path
-	variable tPathData as String
-	put path pSVGPath into tPath
-	scale tPath by [1,-1]
-	translate tPath by [0, the height of the bounding box of tPath]
-	put the instructions of tPath into tPathData
-	return tPathData
-end handler
-
-/**
-Syntax:
 loadIconSetFromTSVFile pFilePathToTSVfile
 
 Summary:
@@ -315,7 +286,7 @@ Description:
 Use horizScaledOfSVGPath function to get a path that is scaled width-wise.
 
 **/
-public handler horizScaledOfSVGPath(in pScale as integer, in pSVGPath) returns String
+public handler horizScaledOfSVGPath(in pScale as Integer, in pSVGPath) returns String
 	variable tPath as Path
 	variable tPathData as String
 	put path pSVGPath into tPath
@@ -342,7 +313,7 @@ Description:
 Use vertScaledOfSVGPath function to get a path that is scaled height-wise.
 
 **/
-public handler vertScaledOfSVGPath(in pScale as integer, in pSVGPath) returns String
+public handler vertScaledOfSVGPath(in pScale as Integer, in pSVGPath) returns String
 	variable tPath as Path
 	variable tPathData as String
 	put path pSVGPath into tPath
